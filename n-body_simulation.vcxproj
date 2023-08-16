@@ -117,6 +117,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,6 +143,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\body.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\space.cpp" />
+    <ClCompile Include="src\vector.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\body.h" />
+    <ClInclude Include="include\globals.h" />
+    <ClInclude Include="include\space.h" />
+    <ClInclude Include="src\units.cpp" />
+    <ClInclude Include="include\units.h" />
+    <ClInclude Include="include\vector.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\solar_system.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

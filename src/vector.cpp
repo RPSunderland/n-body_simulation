@@ -1,18 +1,23 @@
 #include "../include/vector.h"
 
-Vector::Vector() : Vector(0, 0) { }
-Vector::Vector(double x, double y) : x(x), y(y) { }
+Vector::Vector() : Vector(0, 0, 0) { }
+Vector::Vector(double x, double y, double z) : x(x), y(y), z(z) { }
 
-double Vector::norm() {
+double Vector::norm() const{
 	return sqrt(sq_norm());
 }
-double Vector::sq_norm() {
-	return std::pow(x, 2) + std::pow(y, 2);
+double Vector::sq_norm() const {
+	return std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
+}
+
+double Vector::max_norm() const {
+	return std::abs(std::max({ x, y, z }));
 }
 
 Vector& Vector::operator+=(const Vector& other) {
 	x += other.x;
 	y += other.y;
+	z += other.z;
 	return *this;
 }	
 
@@ -24,6 +29,12 @@ Vector& Vector::operator-=(const Vector& other) {
 Vector& Vector::operator*=(double scalar) {
 	x *= scalar;
 	y *= scalar;
+	z *= scalar;
+	return *this;
+}
+
+Vector& Vector::operator/=(double scalar) {
+	*this *= (1 / scalar);
 	return *this;
 }
 
@@ -44,17 +55,20 @@ Vector operator-(Vector lhs, const Vector& rhs) {
 }
 
 
-Vector operator*(Vector vector, double scalar) {
-	vector *= scalar;
-	return vector;
+Vector operator*(Vector lhs, double rhs) {
+	lhs *= rhs;
+	return lhs;
 }
 
-Vector operator*(double scalar, Vector vector) {
-	vector *= scalar;
-	return vector;
+Vector operator*(double lhs, Vector rhs) {
+	rhs *= lhs;
+	return rhs;
 }
 
-Vector operator/(Vector vector, double scalar) {
-	vector *= (1 / scalar);
-	return vector;
+Vector operator/(Vector lhs, double rhs) {
+	lhs /= rhs;
+	return lhs;
 }
+
+
+//

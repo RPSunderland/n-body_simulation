@@ -1,17 +1,20 @@
 #pragma once
-#include <utility>
-#include <string>
-#include <iostream>
 #include "vector.h"
+
 class Body {
 public:
 	Body();
-	Body(const std::string& name, double mass, Vector position, Vector veliocity);
-	void print_data() const;
-//private:
-	const std::string name;
-	double mass;
-	Vector position; //(x, y)
-	Vector veliocity; //(v_x, v_y)
-};
+	Body(const std::string& name, double mass, Vector position, Vector velocity, double radius);
+	Body(const Body& other) = default;
+	Body(Body&& other) noexcept = default;
+	Body& operator=(const Body& other) = default;
+	Body& operator=(Body&& other) noexcept = default;
+	~Body() = default;
 
+public:
+	std::string name;
+	double mass;
+	Vector position; 
+	Vector velocity; 
+	double radius;
+};

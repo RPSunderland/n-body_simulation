@@ -1,10 +1,10 @@
 #include "../include/space.h"
 
-Space::Space(int body_count, std::array<double, 3> size, double begin_time, double end_time, double dt, double eps, std::vector<Body> bodies) : body_count(body_count), size(size), begin_time(begin_time), end_time(end_time),
-				actual_time(begin_time), dt(dt), eps(eps), bodies(std::move(bodies)) { };
+Space::Space(const std::string& name, int body_count, std::array<double, 3> size, double begin_time, double end_time, double dt, std::vector<Body> bodies) : name(name), body_count(body_count), size(size), begin_time(begin_time), end_time(end_time),
+				actual_time(begin_time), dt(dt), bodies(std::move(bodies)) { };
 
-void Space::compute_simulation_step() {	//naive (first update velocity, then posiotions)
-	
+bool Space::compute_simulation_step() {	//naive (first update velocity, then posiotions)
+	if (actual_time < begin_time || actual_time > end_time) return false;
 	for (int i = 0; i < body_count; ++i) {
 		Vector acceleration;
 		for (int j = 0; j < body_count; ++j) {
@@ -28,6 +28,10 @@ void Space::compute_simulation_step() {	//naive (first update velocity, then pos
 			--i;
 		}
 	}
+
+	actual_time += dt;
+
+	return true;
 }
 
 void Space::handle_colision(int i, int j) {

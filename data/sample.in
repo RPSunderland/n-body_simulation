@@ -1,0 +1,11 @@
+SPACE_NAME: string 
+SPACE_SIZE: (double, double, double) 
+SPACE_DURATION: int	
+SPACE_DT: int 
+PRINT_TIME_INTERVAL: int 
+BODY_COUNT: int
+	BODY_NAME: string,	BODY_MASS: double,  BODY_RADIUS: double,  BODY_POSITION: (double, double, double),  BODY_VELOCITY: (double, double, double)	
+	.
+	.	(BODY_COUNT)
+	.
+	BODY_NAME: string,	BODY_MASS: double,  BODY_RADIUS: double,  BODY_POSITION: (double, double, double),  BODY_VELOCITY: (double, double, double)	

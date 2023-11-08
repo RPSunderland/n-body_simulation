@@ -3,26 +3,26 @@
 
 class Space {
 public:
-	Space(int body_count, std::array<double, 3> size, double begin_time, double end_time, double dt, double eps, std::vector<Body> bodies);
+	Space(const std::string& name, int body_count, std::array<double, 3> size, double begin_time, double end_time, double dt, std::vector<Body> bodies);	//jeden jedyny konstruktor jawny
 	Space(const Space& other) = delete;
 	Space(Space&& other) noexcept = delete;
 	Space& operator=(const Space& other) = delete;
 	Space& operator=(Space&& other) noexcept = delete;
 	~Space() = default;
 
-	void compute_simulation_step();
-	void handle_colision(int i, int j);
-	void handle_escape(int i);
+	bool compute_simulation_step();	//oblicza krok symulacji o czas dt
+	void handle_colision(int i, int j);	//obluga kolizje dwoch obiektow
+	void handle_escape(int i); //obsluga ucieczki obiektu
 
 public:
-	int body_count;
-	const std::array<double, 3> size;
-	const double begin_time;
-	const double end_time;
-	double actual_time;
-	const double dt;
-	const double eps;
-	std::vector<Body> bodies;
+	const std::string name;
+	const std::array<double, 3> size; //rozmiar przestrzeni
+	const double begin_time; //start symulacji
+	const double end_time; //zakonczenie symulacji
+	double actual_time; //obecny czas
+	int body_count; //ilosc cial
+	const double dt; //krok czasowy
+	std::vector<Body> bodies; //ciala
 };
 
 

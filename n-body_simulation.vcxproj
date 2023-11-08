@@ -119,6 +119,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,24 +143,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="data\sample.out" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\file_reader.cpp" />
+    <ClCompile Include="src\file_writer.cpp" />
+    <ClCompile Include="src\reader.cpp" />
+    <ClCompile Include="src\reporter.cpp" />
     <ClCompile Include="src\body.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\space.cpp" />
     <ClCompile Include="src\vector.cpp" />
+    <ClCompile Include="src\writer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\file_reader.h" />
+    <ClInclude Include="include\file_writer.h" />
     <ClInclude Include="include\body.h" />
     <ClInclude Include="include\globals.h" />
+    <ClInclude Include="include\includes.h" />
     <ClInclude Include="include\space.h" />
-    <ClInclude Include="src\units.cpp" />
-    <ClInclude Include="include\units.h" />
+    <ClInclude Include="include\reporter.h" />
     <ClInclude Include="include\vector.h" />
+    <ClInclude Include="include\reader.h" />
+    <ClInclude Include="include\writer.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="data\sample.in" />
     <Text Include="data\solar_system.txt" />
+    <Text Include="to_do.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

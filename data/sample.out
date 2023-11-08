@@ -1,0 +1,21 @@
+SPACE_NAME: string
+SPACE_SIZE: (double, double, double)
+SPACE_DURATION: int
+SPACE_DT: int 
+PRINT_TIME_INTERVAL: int 
+BODY_COUNT: int
+	SPACE_CURRENT_TIME: int (dd, mm, yyyy)
+		BODY_NAME: string,	BODY_MASS: double (unit),  BODY_RADIUS: double (unit),  BODY_POSITION: (double, double, double) (unit),  BODY_VELOCITY: (double, double, double) (unit)	
+		.
+		.	(BODY_COUNT)
+		.
+		BODY_NAME: string,	BODY_MASS: double (unit),  BODY_RADIUS: double (unit),  BODY_POSITION: (double, double, double) (unit),  BODY_VELOCITY: (double, double, double) (unit)
+	.
+	.	(SPACE_DURATION / PRINT_TIME_INTERVAL)
+	.
+	SPACE_CURRENT_DATE: int (dd, mm, yyyy)
+		BODY_NAME: string,	BODY_MASS: double (unit),  BODY_RADIUS: double (unit),  BODY_POSITION: (double, double, double) (unit),  BODY_VELOCITY: (double, double, double) (unit)	
+		.
+		.	(BODY_COUNT)
+		.
+		BODY_NAME: string,	BODY_MASS: double (unit),  BODY_RADIUS: double (unit),  BODY_POSITION: (double, double, double) (unit),  BODY_VELOCITY: (double, double, double) (unit)

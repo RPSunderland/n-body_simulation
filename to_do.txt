@@ -1,0 +1,15 @@
+#1
+
+-space powinien sprawdzac czy jest w stanie zrobic krok symulacji (begin_time <= actual_time < end_time), i zwracac boola do reportera
+-reporter powinien wiedziec kiedy byl poczatek symulacji (jako data, dodawac kroki czasowe do daty podczas printowania) i na koniec zaprintowac date koncowa
+-reader odczytuje dane, writer je zapisuje
+
+1. Obsu³ga dat w formacie dd/mm/yyyy (tylko przy wyjsciowym printowaniu)
+2. Obs³uga wyjatkow
+3. Testy jednostkowe
+
+MERGE
+
+
+4. Przyspieszenie algorytmu (octotrees)
+5. Implementacja GUI (sfml)

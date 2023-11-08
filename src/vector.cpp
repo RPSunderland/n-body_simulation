@@ -71,4 +71,3 @@ Vector operator/(Vector lhs, double rhs) {
 }
 
 
-//

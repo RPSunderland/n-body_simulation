@@ -1,29 +1,30 @@
+#pragma once
 #include "body.h"
 #include "globals.h"
 
 class Space {
 public:
-	Space(const std::string& name, int body_count, std::array<double, 3> size, double begin_time, double end_time, double dt, std::vector<Body> bodies);	//jeden jedyny konstruktor jawny
+	Space() = default;
+	Space(const std::string& name, std::size_t body_count, std::array<double, 3> size, std::size_t begin_time, std::size_t end_time, std::size_t dt, std::vector<Body> bodies);
 	Space(const Space& other) = delete;
 	Space(Space&& other) noexcept = delete;
 	Space& operator=(const Space& other) = delete;
 	Space& operator=(Space&& other) noexcept = delete;
 	~Space() = default;
 
-	bool compute_simulation_step();	//oblicza krok symulacji o czas dt
-	void handle_colision(int i, int j);	//obluga kolizje dwoch obiektow
-	void handle_escape(int i); //obsluga ucieczki obiektu
+	bool simulation_step();	
+	void handle_colision(std::size_t i, std::size_t j); 
+	void handle_escape(std::size_t i); 
 
 public:
-	const std::string name;
-	const std::array<double, 3> size; //rozmiar przestrzeni
-	const double begin_time; //start symulacji
-	const double end_time; //zakonczenie symulacji
-	double actual_time; //obecny czas
-	int body_count; //ilosc cial
-	const double dt; //krok czasowy
-	std::vector<Body> bodies; //ciala
+	std::string name;
+	std::array<double, 3> size;
+	std::size_t begin_time; 
+	std::size_t end_time; 
+	std::size_t current_time;
+	std::size_t body_count;
+	std::size_t dt; 
+	std::vector<Body> bodies; 
 };
 
 
-//-maybe some static variables 

@@ -11,7 +11,7 @@ double Vector::sq_norm() const {
 }
 
 double Vector::max_norm() const {
-	return std::abs(std::max({ x, y, z }));
+	return std::max({ std::abs(x), std::abs(y), std::abs(z) });
 }
 
 Vector& Vector::operator+=(const Vector& other) {

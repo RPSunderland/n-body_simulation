@@ -117,13 +117,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\rafal\Desktop\Software\Cpp\SFML-2.6.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\rafal\Desktop\Software\Cpp\SFML-2.6.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,8 +148,9 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\file_reader.cpp" />
-    <ClCompile Include="src\file_writer.cpp" />
+    <ClCompile Include="src\data_generator.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\reader.cpp" />
     <ClCompile Include="src\reporter.cpp" />
     <ClCompile Include="src\body.cpp" />
@@ -158,8 +160,6 @@
     <ClCompile Include="src\writer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\file_reader.h" />
-    <ClInclude Include="include\file_writer.h" />
     <ClInclude Include="include\body.h" />
     <ClInclude Include="include\globals.h" />
     <ClInclude Include="include\includes.h" />
@@ -170,6 +170,8 @@
     <ClInclude Include="include\writer.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="data\100_particles.txt" />
+    <Text Include="data\10_particles.txt" />
     <Text Include="data\sample.in" />
     <Text Include="data\solar_system.txt" />
     <Text Include="to_do.txt" />

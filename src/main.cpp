@@ -1,13 +1,10 @@
 #include "../include/reporter.h"
 
-
-
 int main(int argc, char* argv[]) {
-	Reporter reporter; //stworzenie reportera (singleton?)
-	reporter.load_data(argv[1]); //za³adowanie danych z symulacji do reportera
-	reporter.run_simulation(); //reporter odpala symulacje (automatyczny rejestr do pliku - mozna wylaczyc jesli bedzie tryb graficzny)
-	
-	
+	Reporter reporter; //create reporter (singleton?)
+	reporter.create_space(); //reporter create default empty space
+	reporter.read_file_data(argv[1]); //reporter will make reader to read data to space
+	reporter.run(); //reporter will start simulation and make writer to write data to file in specific time intervals
 	return 0;
 }
 
@@ -17,3 +14,4 @@ int main(int argc, char* argv[]) {
 
 
 
+//reporter.stop(); //reporter will stop simulation

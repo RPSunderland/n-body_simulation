@@ -8,4 +8,5 @@ BODY_COUNT: int
 	.
 	.	(BODY_COUNT)
 	.
+	
 	BODY_NAME: string,	BODY_MASS: double,  BODY_RADIUS: double,  BODY_POSITION: (double, double, double),  BODY_VELOCITY: (double, double, double)	

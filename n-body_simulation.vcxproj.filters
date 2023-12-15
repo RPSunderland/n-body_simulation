@@ -40,10 +40,7 @@
     <ClCompile Include="src\reader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\file_writer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\file_reader.cpp">
+    <ClCompile Include="src\data_generator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -72,16 +69,12 @@
     <ClInclude Include="include\reader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\file_writer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\file_reader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="data\solar_system.txt" />
     <Text Include="data\sample.in" />
     <Text Include="to_do.txt" />
+    <Text Include="data\solar_system.txt" />
+    <Text Include="data\100_particles.txt" />
+    <Text Include="data\10_particles.txt" />
   </ItemGroup>
 </Project>

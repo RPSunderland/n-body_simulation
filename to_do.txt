@@ -1,10 +1,5 @@
 #1
-
--space powinien sprawdzac czy jest w stanie zrobic krok symulacji (begin_time <= actual_time < end_time), i zwracac boola do reportera
--reporter powinien wiedziec kiedy byl poczatek symulacji (jako data, dodawac kroki czasowe do daty podczas printowania) i na koniec zaprintowac date koncowa
--reader odczytuje dane, writer je zapisuje
-
-1. Obsu³ga dat w formacie dd/mm/yyyy (tylko przy wyjsciowym printowaniu)
+1. Ogarnac dobry data-set (solar-system jest tylko pokazowy, bedzie mial osobne obrazki itd) dla jednorodnych czasteczek tak aby bylo mozna je sprawnie wyswietlac na ekranie 
 2. Obs³uga wyjatkow
 3. Testy jednostkowe
 
@@ -13,3 +8,16 @@ MERGE
 
 4. Przyspieszenie algorytmu (octotrees)
 5. Implementacja GUI (sfml)
+	Main window - okno otwierajace sie po uruchomieniu aplikacji, a zamykajacy przy zakonczeniu. S³u¿y do tworzenia nowych symulacji. 
+		Sandbox - wlasnosci przestrzeni defaultowe, tworzymy nwe cia³a klikajac je na ekranie w simulation window
+		Random - wpisujemy liczbe cia³, po czym program randomowo nam je tworzy, wlasnosci przestzreni defaultowe
+		From File - wpisujemy sciezke do pliku, mozemy predefiniowac wszystkie zmienne takie jak wlasnosci przesztreni, printowanie, itd
+		Sace_to_file - odbedzie sie zapis wynikow do pliku
+		Display - otworzy sie okno Simulation Window z widoczna symulacja graficzna (w przeciwnym razie w Main Winddow bêdzie tylko komunikat o trwaniu symulki)
+		Start - odpalenie symulacji z Main Window (zadzia³a tylko jeœli zaznczyliœmy dany tryb)
+	Simulation Window - okno w którym pracuje symulacja, po lewej stronie przesztren po której mo¿emy siê poruszaæ z zanzaczonymi cia³ami oraz granicami, najechanie myszka na czasteczke pokaze jej wlasnosci
+		Simualtion Info - podstaowwe wlasnosci przestzreni (czas, dt, ilosc cial, itd)
+		Slider czasu - mo¿liwoœæ ustawienia sszybkosci wyswietlania (domyslnie 1 klata = 1 dt ?)
+		Start / Pause / Stop - bez komentarza
+
+	Osobna klasa do MainWindow i SimulationWIndow

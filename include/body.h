@@ -17,4 +17,5 @@ public:
 	double radius;
 	Vector position; 
 	Vector velocity; 
+	Vector acceleration;
 };

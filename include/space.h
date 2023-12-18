@@ -1,6 +1,7 @@
 #pragma once
 #include "body.h"
 #include "globals.h"
+#include "octree.h"
 
 class Space {
 public:

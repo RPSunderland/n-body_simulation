@@ -7,6 +7,13 @@ MERGE
 
 
 4. Przyspieszenie algorytmu (octotrees)
+	klasa iterator tylk odo przechodzenia po drzewie dfs(?) i obliczaniu si³ (cia³a s¹ w lisciach) - iteracyjnie
+
+	Node - 
+	Octant
+	Octree
+
+
 5. Implementacja GUI (sfml)
 	Main window - okno otwierajace sie po uruchomieniu aplikacji, a zamykajacy przy zakonczeniu. S³u¿y do tworzenia nowych symulacji. 
 		Sandbox - wlasnosci przestrzeni defaultowe, tworzymy nwe cia³a klikajac je na ekranie w simulation window

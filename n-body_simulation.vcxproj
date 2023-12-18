@@ -148,9 +148,9 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\data_generator.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="src\node.cpp" />
+    <ClCompile Include="src\octant.cpp" />
+    <ClCompile Include="src\octree.cpp" />
     <ClCompile Include="src\reader.cpp" />
     <ClCompile Include="src\reporter.cpp" />
     <ClCompile Include="src\body.cpp" />
@@ -168,6 +168,9 @@
     <ClInclude Include="include\vector.h" />
     <ClInclude Include="include\reader.h" />
     <ClInclude Include="include\writer.h" />
+    <ClInclude Include="include\node.h" />
+    <ClInclude Include="include\octant.h" />
+    <ClInclude Include="include\octree.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\100_particles.txt" />

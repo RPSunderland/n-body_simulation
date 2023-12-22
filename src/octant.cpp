@@ -56,3 +56,4 @@ Octant Octant::NEU() {
 	neu_octant.length = length / 2;
 	return neu_octant;
 }
+

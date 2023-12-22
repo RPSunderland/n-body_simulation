@@ -1,96 +1,139 @@
 #include "../include/octree.h"
-#include "../include//space.h"
 
-Octree::Octree() { }
-Octree::Octree(Octant octant) : node(Node{ }), octant(octant), SWD(nullptr), SED(nullptr), NWD(nullptr), NED(nullptr), SWU(nullptr), SEU(nullptr), NWU(nullptr), NEU(nullptr) { }
-void Octree::insert(Node node) {
-
-	if (this->node.mass == -1) {	//empty node
-		this->node = node;
-		return;
+Octree::Octree(Body* body, Octant octant, double eps) : root(new Node(body, octant)), eps(eps) { }
+Octree::~Octree() { delete_tree(root); }
+void Octree::delete_tree(Node* node) {
+	if (node != nullptr) {
+		for (int i = 0; i < 8; ++i) {
+			delete_tree(node->children[i]);
+		}
+		delete node;
 	}
-	if (is_leaf()) {	//external node
-		SWD = std::make_unique<Octree>(octant.SWD());
-		SED = std::make_unique<Octree>(octant.SED());
-		NWD = std::make_unique<Octree>(octant.NWD());
-		NED = std::make_unique<Octree>(octant.NED());
-		SWU = std::make_unique<Octree>(octant.SWU());
-		SEU = std::make_unique<Octree>(octant.SEU());
-		NWU = std::make_unique<Octree>(octant.NWU());
-		NEU = std::make_unique<Octree>(octant.NEU());
-
-		if (node.in(octant.SWD())) { SWD->insert(node); }
-		else if (node.in(octant.SED())) { SED->insert(node); }
-		else if (node.in(octant.NWD())) { NWD->insert(node); }
-		else if (node.in(octant.NED())) { NED->insert(node); }
-		else if (node.in(octant.SWU())) { SWU->insert(node); }
-		else if (node.in(octant.SEU())) { SEU->insert(node); }
-		else if (node.in(octant.NWU())) { NWU->insert(node); }
-		else if (node.in(octant.NEU())) { NEU->insert(node); }
-
-		if (this->node.in(octant.SWD())) { SWD->insert(this->node); }
-		else if (this->node.in(octant.SED())) { SED->insert(this->node); }
-		else if (this->node.in(octant.NWD())) { NWD->insert(this->node); }
-		else if (this->node.in(octant.NED())) { NED->insert(this->node); }
-		else if (this->node.in(octant.SWU())) { SWU->insert(this->node); }
-		else if (this->node.in(octant.SEU())) { SEU->insert(this->node); }
-		else if (this->node.in(octant.NWU())) { NWU->insert(this->node); }
-		else if (this->node.in(octant.NEU())) { NEU->insert(this->node); }
-
-		this->node = merge(this->node, node);
-		return;
-	}
-	this->node = merge(this->node, node);	//internal node
-	if (node.in(octant.SWD())) { SWD->insert(node); return; }
-	if (node.in(octant.SED())) { SED->insert(node); return; }
-	if (node.in(octant.NWD())) { NWD->insert(node); return; }
-	if (node.in(octant.NED())) { NED->insert(node); return; }
-	if (node.in(octant.SWU())) { SWU->insert(node); return; }
-	if (node.in(octant.SEU())) { SEU->insert(node); return; }
-	if (node.in(octant.NWU())) { NWU->insert(node); return; }
-	if (node.in(octant.NEU())) { NEU->insert(node); return; }
-	std::cerr << "not insert\n";
 }
 
-void Octree::update_acceleration(Body* body) { 
-	if (node.body != nullptr && body != node.body) {	//calculate force
-		Vector r = body->position - node.body->position;
-		if (r.norm() < body->radius + node.body->radius) { std::cout << "boom\n"; } //handle_colision, TO_DO!!!
-		body->acceleration += (G * node.body->mass / r.sq_norm()) * (r / r.norm());
-		return;
-	}
-	double s = octant.length;
-	Vector r = body->position - node.position;
-	double d = r.norm();
-	if (s / d < 0.5) {
-		body->acceleration += (G * node.mass / r.sq_norm()) * (r / d);
-		return;
-	}
-	if (SWD != nullptr) SWD->update_acceleration(body);
-	if (SED != nullptr) SED->update_acceleration(body);
-	if (NWD != nullptr) NWD->update_acceleration(body);
-	if (NED != nullptr) NED->update_acceleration(body);
-	if (SWU != nullptr) SWU->update_acceleration(body);
-	if (SEU != nullptr) SEU->update_acceleration(body);
-	if (NWU != nullptr) NWU->update_acceleration(body);
-	if (NEU != nullptr) NEU->update_acceleration(body);
+void Octree::insert(Body* body) {
+	root = insert(root, root->octant, body);
 }
 
-bool Octree::is_leaf() {
-	if (SWD == nullptr && SED == nullptr && NWD == nullptr && NED == nullptr && SWU == nullptr && SEU == nullptr && NWU == nullptr && NEU == nullptr) return true;
-	return false;
+Node* Octree::insert(Node* node, Octant octant, Body* body) {
+	if (node == nullptr) {	//nullptr
+		return new Node(body, octant);
+	}
+	node->center_of_mass = (node->center_of_mass * node->total_mass + body->position * body->mass) / (node->total_mass + body->mass);
+	node->total_mass += body->mass;
+	if (node->body == nullptr) { //internal node
+		int index = node->get_child_index(body->position);
+		switch (index) {
+			case 0: octant = octant.SWD(); break;
+			case 1: octant = octant.SED(); break;
+			case 2: octant = octant.NWD(); break;
+			case 3: octant = octant.NED(); break;
+			case 4: octant = octant.SWU(); break;
+			case 5: octant = octant.SEU(); break;
+			case 6: octant = octant.NWU(); break;
+			case 7: octant = octant.NEU(); break;
+			default: break;
+		}
+		node->children[index] = insert(node->children[index], octant, body);
+	} 	
+	else { //external node	
+
+		if (octant.length < eps) {
+			Vector r = node->body->position - body->position;
+			double d = r.norm();
+			if (d < body->radius + node->body->radius) {	//collision
+				if (body->radius < node->body->radius) { body->collided_body = node->body; return node; }
+				node->body->collided_body = body;
+				node->body = body;
+				return node;
+			}
+		}
+
+		int index_1 = node->get_child_index(body->position);
+		int index_2 = node->get_child_index(node->body->position);
+		Octant octant_1, octant_2;
+		switch (index_1) {
+			case 0: octant_1 = octant.SWD(); break;
+			case 1: octant_1 = octant.SED(); break;
+			case 2: octant_1 = octant.NWD(); break;
+			case 3: octant_1 = octant.NED(); break;
+			case 4: octant_1 = octant.SWU(); break;
+			case 5: octant_1 = octant.SEU(); break;
+			case 6: octant_1 = octant.NWU(); break;
+			case 7: octant_1 = octant.NEU(); break;
+			default: break;
+		}
+		switch (index_2) {
+			case 0: octant_2 = octant.SWD(); break;
+			case 1: octant_2 = octant.SED(); break;
+			case 2: octant_2 = octant.NWD(); break;
+			case 3: octant_2 = octant.NED(); break;
+			case 4: octant_2 = octant.SWU(); break;
+			case 5: octant_2 = octant.SEU(); break;
+			case 6: octant_2 = octant.NWU(); break;
+			case 7: octant_2 = octant.NEU(); break;
+			default: break;
+		}
+		node->children[index_1] = insert(node->children[index_1], octant_1, body);
+		node->children[index_2] = insert(node->children[index_2], octant_2, node->body);
+		node->body = nullptr;
+	}
+	return node;
 }
+
+void Octree::update_acceleration(Body* body) {
+	update_acceleration(root, body);
+}
+
+void Octree::update_acceleration(Node* node, Body* body) {
+	if (body->collided_body != nullptr) return;
+	if (node != nullptr) {
+		Vector r;
+		double d;
+		double sq;
+		if (node->body != nullptr) {
+			if (body == node->body) return;
+			r = node->body->position - body->position;
+			d = r.norm();
+
+			if (d < body->radius + node->body->radius) { //collision
+				if (body->radius < node->body->radius) {
+					body->collided_body = node->body;
+					body->acceleration = { 0, 0, 0 };
+					return;
+				}
+				node->body->collided_body = body;
+				return;
+			}
+
+			sq = r.sq_norm();
+			body->acceleration += (G * node->body->mass / sq) * (r / d);
+			return;
+		}
+		r = node->center_of_mass - body->position;
+		d = r.norm();
+		double s = node->octant.length;
+		if (s / d < 0.5) {
+			sq = r.sq_norm();
+			body->acceleration += (G * node->total_mass / r.sq_norm()) * (r / d);
+			return;
+		}
+		for (int i = 0; i < 8; ++i) {
+			update_acceleration(node->children[i], body);
+		}
+	}
+}
+
 
 void Octree::print() {
-	if (node.body != nullptr) {
-		std::cout << node.body->position.x << " " << node.body->position.y << " " << node.body->position.z << "\n";
+	print(root);
+}
+
+void Octree::print(Node* node) {
+	if(node != nullptr) {
+		if (node->body != nullptr) { std::cout << node->body->position.x << " " << node->body->position.y << " " << node->body->position.z << "\n"; return; }
+		for (int i = 0; i < 8; ++i) {
+			print(node->children[i]);
+		}
 	}
-	if (SWD != nullptr) SWD->print();
-	if (SED != nullptr) SED->print();
-	if (NWD != nullptr) NWD->print();
-	if (NED != nullptr) NED->print();
-	if (SWU != nullptr) SWU->print();
-	if (SEU != nullptr) SEU->print();
-	if (NWU != nullptr) NWU->print();
-	if (NEU != nullptr) NEU->print();
 }

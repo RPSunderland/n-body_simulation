@@ -14,7 +14,8 @@ public:
 	~Space() = default;
 
 	bool simulation_step();	
-	void handle_colision(std::size_t i, std::size_t j); 
+	//void handle_colision(std::size_t i, std::size_t j); 
+	void handle_collision(std::size_t i, Body* collided_body);
 	void handle_escape(std::size_t i); 
 
 public:

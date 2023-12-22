@@ -18,4 +18,5 @@ public:
 	Vector position; 
 	Vector velocity; 
 	Vector acceleration;
+	Body* collided_body; 
 };

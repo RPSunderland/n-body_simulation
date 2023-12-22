@@ -10,7 +10,7 @@ public:
 	~Writer() = default;
 
 public:
-	std::size_t seconds_to_days(std::size_t seconds); 
+	std::size_t seconds_to_days(std::size_t seconds);	//functions not method
 	std::size_t seconds_to_months(std::size_t seconds); 
 	std::size_t seconds_to_years(std::size_t seconds);
 

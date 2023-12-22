@@ -3,29 +3,23 @@
 
 class Octree {
 public:
-	Octree();
-	Octree(Octant octant);
+	Octree() = delete;
+	Octree(Body* body, Octant octant, double eps);
 	Octree(const Octree& other) = delete;
 	Octree(Octree&& other) noexcept = default;
 	Octree& operator=(const Octree & other) = delete;
 	Octree& operator=(Octree&& other) noexcept = default;
-	~Octree() = default;
+	~Octree();
 public:
-	void insert(Node node);
+	Node* insert(Node* node, Octant octant, Body* body);
+	void insert(Body* body);
 	void update_acceleration(Body* body);
-	void handle_collision(Node* n1, Node* n2);
-	bool is_leaf();
-	void print();
+	void update_acceleration(Node* node, Body* body);
+	void delete_tree(Node* node);
+	void print();	//x
+	void print(Node* node);	//x
 public:
-	Node node;
-	Octant octant; 
-	std::unique_ptr<Octree> SWD;
-	std::unique_ptr<Octree> SED;
-	std::unique_ptr<Octree> NWD;
-	std::unique_ptr<Octree> NED;
-	std::unique_ptr<Octree> SWU;
-	std::unique_ptr<Octree> SEU;
-	std::unique_ptr<Octree> NWU;
-	std::unique_ptr<Octree> NEU;
+	Node* root;
+	double eps;
 };
 

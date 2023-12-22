@@ -5,7 +5,7 @@
 
 class Reporter {
 public:
-	Reporter();	//only default constructor
+	Reporter();
 	Reporter(const Reporter& other) = delete;
 	Reporter(Reporter&& other) noexcept = delete;
 	Reporter& operator=(const Reporter& other) = delete;
@@ -24,7 +24,7 @@ private:
 	std::unique_ptr<Writer> writer;
 	std::size_t print_time_interval;
 	bool is_running;	
-	bool is_file_writing; //can be undone by gui
+	bool is_file_writing; 
 };
 
 

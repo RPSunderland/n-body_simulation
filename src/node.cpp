@@ -1,16 +1,19 @@
 #include "../include/node.h"
 
-Node::Node() : mass(-1), position(0, 0, 0), body(nullptr) { }
-Node::Node(Body* body) : mass(body->mass), position(body->position), body(body) { }
-bool Node::in(Octant octant) {
-	if (position.x < octant.anchor.x || position.x > octant.anchor.x + octant.length) return false;
-	if (position.y < octant.anchor.y || position.y > octant.anchor.y + octant.length) return false;
-	if (position.z < octant.anchor.z || position.z > octant.anchor.z + octant.length) return false;
-	return true;
+Node::Node(Body* body, Octant octant) : total_mass(body->mass), center_of_mass(body->position), octant(octant), body(body) {
+	std::fill(std::begin(children), std::end(children), nullptr);
 }
-Node merge(Node a, Node b) {
-	Node c;
-	c.mass = a.mass + b.mass;
-	c.position = (a.position * a.mass + b.position * b.mass) / c.mass;
-	return c;
+
+int Node::get_child_index(Vector vector) {
+	int index = 0;
+	if (vector.x > octant.anchor.x + octant.length / 2) {
+		index |= 1;
+	}
+	if (vector.y > octant.anchor.y + octant.length / 2) {
+		index |= 2;
+	}
+	if (vector.z > octant.anchor.z + octant.length / 2) {
+		index |= 4;
+	}
+	return index;
 }

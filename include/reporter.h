@@ -1,7 +1,7 @@
 #pragma once
 #include "space.h"
-#include "reader.h"
-#include "writer.h"
+#include "txt_reader.h"
+#include "txt_writer.h"
 
 class Reporter {
 public:

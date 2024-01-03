@@ -5,34 +5,9 @@ Space::Space(const std::string& name, std::size_t body_count, std::array<double,
 
 bool Space::simulation_step() {	
 	if (current_time >= end_time) return false;
-
-	//naive
-	//for (std::size_t i = 0; i < body_count; ++i) {
-	//	bodies[i].acceleration = Vector(0, 0, 0);
-	//	Vector acceleration;
-	//	for (std::size_t j = 0; j < body_count; ++j) {
-	//		if (i == j) continue;
-	//		Vector r = bodies[j].position - bodies[i].position;
-	//		//if (r.norm() < bodies[i].radius + bodies[j].radius) {
-	//		//	//handle_colision(i, j);	
-	//		//	//std::cout << "boom \n";
-	//		//	--j;	
-	//		//	continue;
-	//		//}
-	//		bodies[i].acceleration += (G * bodies[j].mass / r.sq_norm()) * (r / r.norm());
-	//	}
-	//	bodies[i].velocity += bodies[i].acceleration * static_cast<double>(dt);
-	//}
-	
-
-	//create tree (if there are bodies!!!)
-	//insert all bodies to the tree
-	//call tree.update_acceleration
-	//iterate over bodies if there is null (collison) delete it and update bodie_count
-
 	if (body_count == 0) return true;
 	Octant octant({ -size[0], -size[0],-size[0] }, 2 * size[0]);
-	Octree octree(&bodies[0], octant, bodies[0].radius * 10);	//max radus?
+	Octree octree(&bodies[0], octant, bodies[0].radius * 10);	//max radius?
 	for (std::size_t i = 1; i < body_count; ++i) {
 		octree.insert(&bodies[i]);	//handle collisions
 	}
@@ -49,8 +24,6 @@ bool Space::simulation_step() {
 		if (bodies[i].position.max_norm() > size[0]) { handle_escape(i); --i; continue; }
 		bodies[i].acceleration = { 0, 0, 0 };
 	}
-
-	
 
 	current_time += dt;
 
@@ -76,18 +49,14 @@ void Space::handle_escape(std::size_t i) {
 
 
 
-
-
-//void Space::handle_colision(std::size_t i, std::size_t j) {
-//	std::string new_name = bodies[i].radius < bodies[j].radius ? bodies[j].name : bodies[i].name;
-//	double new_mass = bodies[i].mass + bodies[j].mass;
-//	double new_radius = std::pow(std::pow(bodies[i].radius, 3) + std::pow(bodies[j].radius, 3), 1.0 / 3);
-//	Vector new_velocity = (bodies[i].mass * bodies[i].velocity + bodies[j].mass * bodies[j].velocity) / new_mass;
-//	bodies.erase(bodies.begin() + j);	
-//	--body_count;
-//	bodies[i].mass = new_mass;
-//	bodies[i].radius = new_radius;
-//	bodies[i].velocity = new_velocity;
-//	
-//}
-
+//naive
+	//for (std::size_t i = 0; i < body_count; ++i) {
+	//	bodies[i].acceleration = Vector(0, 0, 0);
+	//	Vector acceleration;
+	//	for (std::size_t j = 0; j < body_count; ++j) {
+	//		if (i == j) continue;
+	//		Vector r = bodies[j].position - bodies[i].position;		
+	//		bodies[i].acceleration += (G * bodies[j].mass / r.sq_norm()) * (r / r.norm());
+	//	}
+	//	bodies[i].velocity += bodies[i].acceleration * static_cast<double>(dt);
+	//}

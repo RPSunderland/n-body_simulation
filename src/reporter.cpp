@@ -1,7 +1,7 @@
 #include "../include/reporter.h"
 
 
-Reporter::Reporter() : space(nullptr), reader(std::make_unique<Reader>()), writer(std::make_unique<Writer>()), print_time_interval(0), is_running(false), is_file_writing(true) { }
+Reporter::Reporter() : space(nullptr), reader(std::make_unique<TxtReader>()), writer(std::make_unique<TxtWriter>()), print_time_interval(0), is_running(false), is_file_writing(true) { }
 
 void Reporter::create_space() {
 	space = std::make_shared<Space>();
@@ -12,7 +12,7 @@ void Reporter::create_space() {
 void Reporter::read_file_data(const std::string& filename) {
 	reader->filename = filename;
 	writer->filename = "out_" + filename;
-	reader->read_file_data(print_time_interval);
+	reader->read_data(print_time_interval);
 }
 
 void Reporter::run() {

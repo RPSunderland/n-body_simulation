@@ -3,23 +3,16 @@
 class Writer {
 public:
 	Writer();
-	Writer(const Writer& other) = delete;
-	Writer(Writer&& other) noexcept = delete;
-	Writer& operator=(const Writer& other) = delete;
-	Writer& operator=(Writer&& other) noexcept = delete;
-	~Writer() = default;
-
+	virtual ~Writer() = default;
 public:
-	std::size_t seconds_to_days(std::size_t seconds);	//functions not method
-	std::size_t seconds_to_months(std::size_t seconds); 
-	std::size_t seconds_to_years(std::size_t seconds);
-
-	void write_initial(std::size_t print_time_interval, std::ofstream& out);
-	void write_space(std::ofstream& out);
-	void write_body(const Body& body, std::ofstream& out) const;
-
+	virtual void write_initial(std::size_t print_time_interval, std::ofstream& out) = 0;
+	virtual void write_space(std::ofstream& out) = 0;
+	virtual void write_body(const Body& body, std::ofstream& out) const = 0;
 public:
 	std::shared_ptr<Space> space;
 	std::string filename;
 };
 
+std::size_t seconds_to_days(std::size_t seconds);	
+std::size_t seconds_to_months(std::size_t seconds);
+std::size_t seconds_to_years(std::size_t seconds);

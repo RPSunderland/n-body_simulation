@@ -6,4 +6,5 @@
 #include <vector>
 #include <memory>
 #include <fstream>
+#include <SFML/Graphics.hpp>
 #include "globals.h"

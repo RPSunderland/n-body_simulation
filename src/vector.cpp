@@ -70,4 +70,8 @@ Vector operator/(Vector lhs, double rhs) {
 	return lhs;
 }
 
-
+sf::Vector2f to_graphic_coords(Vector v) {
+	double x = v.x + 500;
+	double y = -v.y + 500;
+	return sf::Vector2f(static_cast<float>(x), static_cast<float>(y));
+}

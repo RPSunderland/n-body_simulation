@@ -1,10 +1,11 @@
 #include "../include/reporter.h"
 
-
-Reporter::Reporter() : space(nullptr), reader(std::make_unique<TxtReader>()), writer(std::make_unique<TxtWriter>()), print_time_interval(0), is_running(false), is_file_writing(true) { }
+Reporter::Reporter() : space(nullptr), gui_handler(std::make_unique<GUI_Handler>()), reader(std::make_unique<TxtReader>()), writer(std::make_unique<TxtWriter>()), print_time_interval(0), is_running(false), is_file_writing(false) { }
 
 void Reporter::create_space() {
 	space = std::make_shared<Space>();
+	gui_handler->reporter = this;
+	gui_handler->space = space;
 	reader->space = space;
 	writer->space = space;
 }
@@ -15,8 +16,13 @@ void Reporter::read_file_data(const std::string& filename) {
 	reader->read_data(print_time_interval);
 }
 
+void Reporter::read_random_data() {
+	reader->read_random_data();
+}
+
 void Reporter::run() {
-	is_running = true;
+	
+	/*is_running = true;
 	std::ofstream out;
 	if (is_file_writing) {
 		out.open("data/" + writer->filename, std::ios_base::out);
@@ -28,7 +34,21 @@ void Reporter::run() {
 			writer->write_space(out);
 		}
 	}
-	if (is_file_writing) out.close();
+	if (is_file_writing) out.close();*/
+	
+
+	is_running = true;
+	std::ofstream out;
+	if (is_file_writing) {
+		out.open("data/" + writer->filename, std::ios_base::out);
+		writer->write_initial(print_time_interval, out);
+	}
+
+	gui_handler->initialize();
+	gui_handler->show();
+	
+	if (is_file_writing) { out.close(); } 
+
 }
 
 void Reporter::stop() {

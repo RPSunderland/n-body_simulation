@@ -33,4 +33,6 @@ public:
 	double z;
 };
 
+sf::Vector2f to_graphic_coords(Vector v);
+
 

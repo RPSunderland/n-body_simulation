@@ -1,7 +1,10 @@
 #pragma once
 #include "space.h"
+#include "gui_handler.h"
 #include "txt_reader.h"
 #include "txt_writer.h"
+
+class GUI_Handler;
 
 class Reporter {
 public:
@@ -15,11 +18,14 @@ public:
 public:
 	void create_space();
 	void read_file_data(const std::string& filename);
+	void read_random_data();
 	void run();
 	void stop(); 
 
-private:
+public:
+	
 	std::shared_ptr<Space> space;	
+	std::unique_ptr<GUI_Handler> gui_handler;
 	std::unique_ptr<Reader> reader;
 	std::unique_ptr<Writer> writer;
 	std::size_t print_time_interval;

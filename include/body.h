@@ -1,7 +1,7 @@
 #pragma once
 #include "vector.h"
 
-class Body {	
+class Body : public sf::CircleShape {	
 public:
 	Body();
 	Body(const std::string& name, double mass, double radius, Vector position, Vector velocity);
@@ -10,6 +10,10 @@ public:
 	Body& operator=(const Body& other) = default;
 	Body& operator=(Body&& other) noexcept = default;
 	~Body() = default;
+
+public:
+	void set_graphic_position();
+	void move();
 
 public:
 	std::string name;

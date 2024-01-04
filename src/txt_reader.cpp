@@ -21,6 +21,7 @@ void TxtReader::read_data(std::size_t& print_time_interval) {
 		in >> body.radius;
 		in >> body.position.x >> body.position.y >> body.position.z;
 		in >> body.velocity.x >> body.velocity.y >> body.velocity.z;
+		body.set_graphic_position();
 		space->bodies.push_back(body);
 	}
 	in.close();

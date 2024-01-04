@@ -15,4 +15,3 @@ public:
 	void write_space(std::ofstream& out);
 	void write_body(const Body& body, std::ofstream& out) const;
 };
-

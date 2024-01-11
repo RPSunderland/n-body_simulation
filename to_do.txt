@@ -1,30 +1,9 @@
-#1
-1. Ogarnac dobry data-set (solar-system jest tylko pokazowy, bedzie mial osobne obrazki itd) dla jednorodnych czasteczek tak aby bylo mozna je sprawnie wyswietlac na ekranie 
+1. Ogarnac dobry data-set (empirycznie dobraæ parametry do gui, napisaæ przyjazny data_generator dla usera, za³o¿enie dt = 1 klata w GUI)
 2. Obs³uga wyjatkow
 3. Testy jednostkowe
 
-MERGE
 
 
-4. Przyspieszenie algorytmu (octotrees)
-	klasa iterator tylk odo przechodzenia po drzewie dfs(?) i obliczaniu si³ (cia³a s¹ w lisciach) - iteracyjnie
-
-	Node - 
-	Octant
-	Octree
 
 
-5. Implementacja GUI (sfml)
-	Main window - okno otwierajace sie po uruchomieniu aplikacji, a zamykajacy przy zakonczeniu. S³u¿y do tworzenia nowych symulacji. 
-		Sandbox - wlasnosci przestrzeni defaultowe, tworzymy nwe cia³a klikajac je na ekranie w simulation window
-		Random - wpisujemy liczbe cia³, po czym program randomowo nam je tworzy, wlasnosci przestzreni defaultowe
-		From File - wpisujemy sciezke do pliku, mozemy predefiniowac wszystkie zmienne takie jak wlasnosci przesztreni, printowanie, itd
-		Sace_to_file - odbedzie sie zapis wynikow do pliku
-		Display - otworzy sie okno Simulation Window z widoczna symulacja graficzna (w przeciwnym razie w Main Winddow bêdzie tylko komunikat o trwaniu symulki)
-		Start - odpalenie symulacji z Main Window (zadzia³a tylko jeœli zaznczyliœmy dany tryb)
-	Simulation Window - okno w którym pracuje symulacja, po lewej stronie przesztren po której mo¿emy siê poruszaæ z zanzaczonymi cia³ami oraz granicami, najechanie myszka na czasteczke pokaze jej wlasnosci
-		Simualtion Info - podstaowwe wlasnosci przestzreni (czas, dt, ilosc cial, itd)
-		Slider czasu - mo¿liwoœæ ustawienia sszybkosci wyswietlania (domyslnie 1 klata = 1 dt ?)
-		Start / Pause / Stop - bez komentarza
 
-	Osobna klasa do MainWindow i SimulationWIndow

@@ -34,10 +34,10 @@
     <ClCompile Include="src\reporter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\writer.cpp">
+    <ClCompile Include="src\txt_writer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\reader.cpp">
+    <ClCompile Include="src\txt_reader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\node.cpp">
@@ -47,6 +47,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\octant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\reader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\writer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui_handler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\random_reader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\octree_iterator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -69,10 +84,10 @@
     <ClInclude Include="include\includes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\writer.h">
+    <ClInclude Include="include\txt_writer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\reader.h">
+    <ClInclude Include="include\txt_reader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\node.h">
@@ -84,12 +99,27 @@
     <ClInclude Include="include\octant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\reader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\writer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gui_handler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\random_reader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\iterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\octree_iterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\sample.in" />
     <Text Include="to_do.txt" />
-    <Text Include="data\solar_system.txt" />
-    <Text Include="data\100_particles.txt" />
-    <Text Include="data\10_particles.txt" />
   </ItemGroup>
 </Project>

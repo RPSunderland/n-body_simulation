@@ -1,6 +1,6 @@
 #include "../include/gui_handler.h"
 
-GUI_Handler::GUI_Handler() : reporter(nullptr), space(nullptr), window(), border(), view() { }
+GUI_Handler::GUI_Handler() : reporter(nullptr), space(nullptr), window(), border(), view(), text(), font(), is_text_visible(true), is_octree_visible(false) { }
 void GUI_Handler::initialize() {
     window.create(sf::VideoMode(1000, 1000), "n-body_simulation");
     window.setFramerateLimit(60);
@@ -9,48 +9,82 @@ void GUI_Handler::initialize() {
     border.setFillColor(sf::Color::Transparent);
     border.setOutlineColor(sf::Color::Red);
     border.setOutlineThickness(1);
-    border.setOrigin(border.getSize() / 2.f);   //? border.setOrigin(window.getSize() / 2.f);
+    border.setOrigin(border.getSize() / 2.f);   
     border.setPosition(window.getSize().x / 2.f, window.getSize().y / 2.f);
     
     view.setSize(window.getSize().x, window.getSize().y);
     view.setCenter(window.getSize().x / 2.f, window.getSize().y / 2.f);
+
+    if (!font.loadFromFile("resources/arial.ttf")) {
+        std::cerr << "Invalid font file path.\n";
+        return;
+    }
+    text.setFont(font);
+    text.setCharacterSize(10);
+    text.setStyle(sf::Text::Bold);
+    text.setFillColor(sf::Color::White);
+    text.setString(std::string{ });
 }
 
 
-void GUI_Handler::show() {
+void GUI_Handler::run() {
 
     while (window.isOpen()) {
+        window.clear(sf::Color::Black);
+        window.setView(view);
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) { window.close(); }
-            if (event.type == sf::Event::MouseWheelScrolled) {
+            else if (event.type == sf::Event::MouseWheelScrolled) {
                 if (event.mouseWheelScroll.delta > 0) { view.zoom(0.9f); }
                 else if (event.mouseWheelScroll.delta < 0) { view.zoom(1.1f); }
             }
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) { view.move(0, -10); }     
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) { view.move(0, 10); }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) { view.move(-10, 0); }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) { view.move(10, 0); }
-            
-        if (reporter->is_running) {
-            if (!space->simulation_step()) { return; }
-            if (reporter->is_file_writing) {
-                //hmmm
+            else if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Space) { pause(); }
+                else if (event.key.code == sf::Keyboard::O) { is_octree_visible = !is_octree_visible; pause(); }
+                else if (event.key.code == sf::Keyboard::T) { is_text_visible = !is_text_visible; }
             }
         }
 
-        for (auto& body : space->bodies) {
-            body.move();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) { view.move(0, -15); }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) { view.move(0, 15); }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) { view.move(-15, 0); }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) { view.move(15, 0); }
+        
+
+
+        if (is_octree_visible) {
+            reporter->is_running = false;
+            draw_octree();
         }
 
-        window.clear(sf::Color::Black);
-        window.setView(view);
-        window.draw(border);
+        if (reporter->is_running) {
+            if (!space->simulation_step()) { return; }
+            if (reporter->is_file_writing) {
+                if (space->current_time % reporter->writer->print_time_interval < space->dt) {
+                    reporter->writer->write_space();
+                }
+            }
+        }
 
+        if (reporter->is_running) {
+            for (auto& body : space->bodies) {
+                body.move();
+            }
+        }
+        window.draw(border);
 
         for (auto& body : space->bodies) {
             window.draw(body);
+        }
+
+        if (is_text_visible) {
+            update_text();
+            sf::Vector2f viewCenter = view.getCenter();
+            sf::Vector2f viewSize = view.getSize();
+            float padding = 10.0f;
+            text.setPosition(viewCenter.x + viewSize.x / 2.f - text.getLocalBounds().width - padding, viewCenter.y + viewSize.y / 2.f - text.getLocalBounds().height - padding);
+            window.draw(text);
         }
 
         window.display();
@@ -58,8 +92,45 @@ void GUI_Handler::show() {
 
 }
 
-void GUI_Handler::pause() { }
-void GUI_Handler::resume() {}
-void GUI_Handler::speed_up() {}
-void GUI_Handler::slow_down() {}
-void GUI_Handler::draw_octree() {}
+void GUI_Handler::pause() { reporter->is_running = !reporter->is_running; }
+void GUI_Handler::draw_octree() {
+    auto it = space->octree.create_iterator();
+    Node* node;
+    while (!it->is_end()) {
+        node = it->current();
+        if (node != nullptr) {
+            double length = node->octant.length;
+            Vector v1 = node->octant.anchor;
+            Vector v2 = v1 + Vector{ length, 0, 0 };
+            Vector v3 = v1 + Vector{ length, length, 0 };
+            Vector v4 = v1 + Vector{ 0, length, 0 };
+
+            sf::Vector2f w1 = to_graphic_coords(v1);
+            sf::Vector2f w2 = to_graphic_coords(v2);
+            sf::Vector2f w3 = to_graphic_coords(v3);
+            sf::Vector2f w4 = to_graphic_coords(v4);
+
+            sf::ConvexShape square;
+            square.setPointCount(4);
+            square.setPoint(0, w1);
+            square.setPoint(1, w2);
+            square.setPoint(2, w3);
+            square.setPoint(3, w4);
+
+            square.setOutlineColor(sf::Color::Green);
+            square.setFillColor(sf::Color::Transparent);
+            square.setOutlineThickness(1); 
+            window.draw(square); 
+        }
+        node = it->next();
+    }
+
+}
+void GUI_Handler::update_text() {
+    text.setString(std::string{ });
+    std::string tmp_text;
+    tmp_text += std::string("Amount of bodies: ") + std::to_string(space->body_count) + std::string("\n");
+    tmp_text += std::string("Current time: ") + std::to_string(space->current_time) + std::string("\n");
+    tmp_text += std::string("Biggest radius: ") + std::to_string(space->bodies[space->largest_body_index()].radius) + std::string("\n");
+    text.setString(tmp_text);
+}

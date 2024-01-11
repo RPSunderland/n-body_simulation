@@ -1,6 +1,5 @@
 #include "../include/txt_reader.h"
-
-void TxtReader::read_data(std::size_t& print_time_interval) {
+void TxtReader::read_data() {
 	std::ifstream in;
 	in.open("data/" + filename, std::ios_base::in);
 

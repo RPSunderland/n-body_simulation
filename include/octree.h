@@ -1,23 +1,26 @@
 #pragma once
 #include "node.h"
+#include "octree_iterator.h"
 
 class Octree {
 public:
-	Octree() = delete;
+	Octree();
 	Octree(Body* body, Octant octant, double eps);
 	Octree(const Octree& other) = delete;
-	Octree(Octree&& other) noexcept = default;
-	Octree& operator=(const Octree & other) = delete;
-	Octree& operator=(Octree&& other) noexcept = default;
+	Octree(Octree&& other) = delete;
+	Octree& operator=(const Octree& other) = delete;
+	Octree& operator=(Octree&& other) noexcept;
 	~Octree();
+
 public:
 	Node* insert(Node* node, Octant octant, Body* body);
 	void insert(Body* body);
 	void update_acceleration(Body* body);
 	void update_acceleration(Node* node, Body* body);
 	void delete_tree(Node* node);
-	void print();	//x
-	void print(Node* node);	//x
+	std::shared_ptr<OctreeIterator> create_iterator();
+	void display();
+	
 public:
 	Node* root;
 	double eps;

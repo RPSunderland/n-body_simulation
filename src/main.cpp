@@ -2,28 +2,28 @@
 
 int main(int argc, char* argv[]) {
     Reporter reporter;
-    reporter.create_space();
-    if (argc == 2) {
-        reporter.is_file_writing = true;
-        reporter.read_file_data(argv[1]);
+    if (argc == 1) {
+        reporter.random_reader_initialize();
     }
-    else { reporter.read_random_data(); }
-	reporter.run(); //reporter will start simulation and make writer to write data to file in specific time interval
-
-    
-
-	return 0;
+    else if (argc == 2) {
+        reporter.txt_reader_initialize();
+    }
+    else if (argc == 3 && std::string(argv[2]) == "-s") {
+        reporter.txt_reader_initialize();
+        reporter.txt_writer_initialize();
+    }
+    else {
+        std::cerr << "Invalid command line arguments.\n";
+        return EXIT_FAILURE;
+    }
+    reporter.create_space();
+    argc == 1 ? reporter.read_data("") : reporter.read_data(argv[1]);
+    reporter.run();
+    return EXIT_SUCCESS;
 }
 
 
 
-//no input file -> no save to file
- //input file -> save to file by default, you can change it in second command
-
-
-
-
-//reporter.stop(); //reporter will stop simulation
 
 
 

@@ -1,6 +1,17 @@
 #include "../include/octree.h"
 
+Octree::Octree() : root(nullptr), eps(0) { }
 Octree::Octree(Body* body, Octant octant, double eps) : root(new Node(body, octant)), eps(eps) { }
+Octree& Octree::operator=(Octree&& other) noexcept {
+	if (this != &other) {
+		this->delete_tree(root);
+		root = other.root;
+		eps = other.eps;
+		other.root = nullptr;
+		eps = 0;
+	}
+	return *this;
+}
 Octree::~Octree() { delete_tree(root); }
 void Octree::delete_tree(Node* node) {
 	if (node != nullptr) {
@@ -16,7 +27,7 @@ void Octree::insert(Body* body) {
 }
 
 Node* Octree::insert(Node* node, Octant octant, Body* body) {
-	if (node == nullptr) {	//nullptr
+	if (node == nullptr) {
 		return new Node(body, octant);
 	}
 	node->center_of_mass = (node->center_of_mass * node->total_mass + body->position * body->mass) / (node->total_mass + body->mass);
@@ -37,11 +48,10 @@ Node* Octree::insert(Node* node, Octant octant, Body* body) {
 		node->children[index] = insert(node->children[index], octant, body);
 	} 	
 	else { //external node	
-
 		if (octant.length < eps) {
 			Vector r = node->body->position - body->position;
 			double d = r.norm();
-			if (d < body->radius + node->body->radius) {	//collision
+			if (d < body->radius + node->body->radius) { //collision
 				if (body->radius < node->body->radius) { body->collided_body = node->body; return node; }
 				node->body->collided_body = body;
 				node->body = body;
@@ -124,16 +134,16 @@ void Octree::update_acceleration(Node* node, Body* body) {
 	}
 }
 
-
-void Octree::print() {
-	print(root);
-}
-
-void Octree::print(Node* node) {
-	if(node != nullptr) {
-		if (node->body != nullptr) { std::cout << node->body->position.x << " " << node->body->position.y << " " << node->body->position.z << "\n"; return; }
-		for (int i = 0; i < 8; ++i) {
-			print(node->children[i]);
+void Octree::display() {
+	auto it = create_iterator();
+	while (!it->is_end()) {
+		Node* node = it->next();
+		if (node != nullptr && node->body != nullptr) {
+			std::cout << node->body->position.x << "\n";
 		}
 	}
+}
+
+std::shared_ptr<OctreeIterator> Octree::create_iterator() {
+	return std::make_shared<OctreeIterator>(root);
 }

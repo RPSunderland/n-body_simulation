@@ -11,8 +11,10 @@ public:
 	Node& operator=(const Node& other) = default;
 	Node& operator=(Node && other) noexcept = default;
 	~Node() = default;
+
 public:
 	int get_child_index(Vector vector);
+
 public:
 	double total_mass;	
 	Vector center_of_mass;	

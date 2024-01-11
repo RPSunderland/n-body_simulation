@@ -1,6 +1,6 @@
 #include "../include/txt_writer.h"
 
-void TxtWriter::write_initial(std::size_t print_time_interval, std::ofstream& out) {
+void TxtWriter::write_initial() {
 	out << "SPACE_NAME: " << space->name << "\n";
 	out << "SPACE_SIZE: (" << space->size[0] << ", " << space->size[1] << ", " << space->size[2] << ")\n";
 	out << "SPACE_DURATION: " << (space->end_time - space->begin_time) << "\n";
@@ -9,17 +9,14 @@ void TxtWriter::write_initial(std::size_t print_time_interval, std::ofstream& ou
 	out << "BODY_COUNT: " << space->body_count << "\n";	
 }
 
-void TxtWriter::write_space(std::ofstream& out) {
-	std::size_t day = seconds_to_days(space->current_time);
-	std::size_t month = seconds_to_months(space->current_time);
-	std::size_t year = seconds_to_years(space->current_time);
-	out << "	SPACE_CURRENT_TIME: " << space->current_time << " (" << day << ", " << month << ", " << year << ")\n";
+void TxtWriter::write_space() {
+	out << "	SPACE_CURRENT_TIME: " << space->current_time << "\n";
 	for (const auto& body : space->bodies) {
-		write_body(body, out);
+		write_body(body);
 	}
 }
 
-void TxtWriter::write_body(const Body& body, std::ofstream& out) const {
+void TxtWriter::write_body(const Body& body) {
 	out << "		BODY_NAME: " << body.name
 		<< ",	BODY_MASS: " << body.mass
 		<< ",	BODY_RADIUS: " << body.radius

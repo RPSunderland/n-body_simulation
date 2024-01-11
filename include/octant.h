@@ -10,6 +10,7 @@ public:
 	Octant& operator=(const Octant & other) = default;
 	Octant& operator=(Octant && other) noexcept = default;
 	~Octant() = default;
+
 public:
 	bool contains(Vector vector);
 	Octant SWD();
@@ -20,6 +21,7 @@ public:
 	Octant SEU();
 	Octant NWU();
 	Octant NEU();
+
 public:
 	Vector anchor;
 	double length;

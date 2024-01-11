@@ -3,6 +3,7 @@
 #include "gui_handler.h"
 #include "txt_reader.h"
 #include "txt_writer.h"
+#include "random_reader.h"
 
 class GUI_Handler;
 
@@ -16,33 +17,28 @@ public:
 	~Reporter() = default;
 
 public:
+	void random_reader_initialize();
+	void txt_reader_initialize();
+	void txt_writer_initialize();
 	void create_space();
-	void read_file_data(const std::string& filename);
-	void read_random_data();
+	void read_data(const std::string& filename);
 	void run();
-	void stop(); 
-
-public:
 	
+public:
 	std::shared_ptr<Space> space;	
 	std::unique_ptr<GUI_Handler> gui_handler;
 	std::unique_ptr<Reader> reader;
 	std::unique_ptr<Writer> writer;
-	std::size_t print_time_interval;
 	bool is_running;	
 	bool is_file_writing; 
+	bool is_file_reading;
 };
 
 
 
 
-//std::size_t show_time_interval = dt?;	- interval for frequency of showing the simulation on gui screen
-//void speed_up();	- decrease show_time
-//void slow_down(); - increase show_time
-//void change_dt(), change_end_time, - danger, change physics 
-//std::shared_ptr<Space> orginal_space - it would be space with initial conditisions (for restart or sth)
 
-//gui need to care about scale from real size to screen size (also time need to be scaled)
+
 
 
 

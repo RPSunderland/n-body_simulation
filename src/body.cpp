@@ -10,6 +10,7 @@ void Body::set_graphic_position() {
 	setPosition(graphic_position);
 	setFillColor(sf::Color::White);
 	setRadius(radius);
+	setOrigin(radius, radius);
 }
 
 void Body::move() {

@@ -1,64 +1,49 @@
 #include "../include/reporter.h"
 
-Reporter::Reporter() : space(nullptr), gui_handler(std::make_unique<GUI_Handler>()), reader(std::make_unique<TxtReader>()), writer(std::make_unique<TxtWriter>()), print_time_interval(0), is_running(false), is_file_writing(false) { }
+Reporter::Reporter() : space(nullptr), gui_handler(std::make_unique<GUI_Handler>()), reader(nullptr), writer(nullptr), is_running(false), is_file_writing(false), is_file_reading(false) { }
+
+void Reporter::random_reader_initialize() {
+	reader = std::make_unique<RandomReader>();
+}
+void Reporter::txt_reader_initialize() {
+	reader = std::make_unique<TxtReader>();
+	is_file_reading = true;
+}
+void Reporter::txt_writer_initialize() {
+	writer = std::make_unique<TxtWriter>();
+	is_file_writing = true;
+}
 
 void Reporter::create_space() {
 	space = std::make_shared<Space>();
 	gui_handler->reporter = this;
 	gui_handler->space = space;
-	reader->space = space;
-	writer->space = space;
+	if(reader != nullptr) { reader->space = space; }
+	if(writer != nullptr) { writer->space = space; }
 }
 
-void Reporter::read_file_data(const std::string& filename) {
-	reader->filename = filename;
-	writer->filename = "out_" + filename;
-	reader->read_data(print_time_interval);
-}
-
-void Reporter::read_random_data() {
-	reader->read_random_data();
+void Reporter::read_data(const std::string& filename) {
+	if (is_file_reading) {
+		reader->filename = filename;
+	}
+	reader->read_data();
+	if (is_file_writing) {
+		writer->filename = "out_" + filename;
+		writer->print_time_interval = reader->print_time_interval;
+	}
 }
 
 void Reporter::run() {
-	
-	/*is_running = true;
-	std::ofstream out;
-	if (is_file_writing) {
-		out.open("data/" + writer->filename, std::ios_base::out);
-		writer->write_initial(print_time_interval, out);
-	}
-	
-	while (space->simulation_step() && is_running) {
-		if (space->current_time % print_time_interval < space->dt && is_file_writing) {
-			writer->write_space(out);
-		}
-	}
-	if (is_file_writing) out.close();*/
-	
-
 	is_running = true;
-	std::ofstream out;
 	if (is_file_writing) {
-		out.open("data/" + writer->filename, std::ios_base::out);
-		writer->write_initial(print_time_interval, out);
+		writer->out.open("data/" + writer->filename, std::ios_base::out);
+		writer->write_initial();
 	}
-
 	gui_handler->initialize();
-	gui_handler->show();
-	
-	if (is_file_writing) { out.close(); } 
-
+	gui_handler->run();
+	if (is_file_writing) { writer->out.close(); }
 }
 
-void Reporter::stop() {
-	is_running = false;
-}
-
-
-//if(space->current_time % show_time_interval == 0 && is_gui_open) {
-//	writer->write_to_gui()
-//}
 		
 
 

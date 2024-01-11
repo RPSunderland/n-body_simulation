@@ -10,6 +10,7 @@ public:
 	TxtReader& operator=(const TxtReader& other) = delete;
 	TxtReader& operator=(TxtReader&& other) noexcept = delete;
 	~TxtReader() = default;
+
 public:
-	void read_data(std::size_t& print_time_interval);
+	void read_data();
 };

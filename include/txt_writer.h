@@ -11,7 +11,7 @@ public:
 	~TxtWriter() = default;
 
 public:
-	void write_initial(std::size_t print_time_interval, std::ofstream& out);
-	void write_space(std::ofstream& out);
-	void write_body(const Body& body, std::ofstream& out) const;
+	void write_initial();
+	void write_space();
+	void write_body(const Body& body);
 };

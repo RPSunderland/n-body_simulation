@@ -11,14 +11,13 @@ public:
 	GUI_Handler& operator=(const GUI_Handler& other) = delete;
 	GUI_Handler& operator=(GUI_Handler&& other) noexcept = delete;
 	~GUI_Handler() = default;
+
 public:
 	void initialize();
-	void show();
+	void run();
 	void pause();
-	void resume();
-	void speed_up();
-	void slow_down();
 	void draw_octree();
+	void update_text();
 
 public:
 	Reporter* reporter;
@@ -26,5 +25,9 @@ public:
 	sf::RenderWindow window;
 	sf::RectangleShape border;
 	sf::View view;
+	sf::Text text;
+	sf::Font font;
+	bool is_text_visible;
+	bool is_octree_visible;
 };
 

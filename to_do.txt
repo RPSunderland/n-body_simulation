@@ -1,6 +1,11 @@
-1. Ogarnac dobry data-set (empirycznie dobraæ parametry do gui, napisaæ przyjazny data_generator dla usera, za³o¿enie dt = 1 klata w GUI)
-2. Obs³uga wyjatkow
-3. Testy jednostkowe
+1. Text should have constant size
+2. Uniform exceptions handling
+3. Uniform unit tests for physics
+4. Multithreading
+5. 3D view
+
+
+
 
 
 

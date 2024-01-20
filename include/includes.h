@@ -6,5 +6,7 @@
 #include <vector>
 #include <memory>
 #include <fstream>
+#include <cmath>
+#include <random>
 #include <SFML/Graphics.hpp>
 #include "globals.h"

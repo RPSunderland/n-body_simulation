@@ -185,6 +185,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\sample.in" />
+    <Text Include="data\solar_system.txt" />
+    <Text Include="data\galaxy.txt" />
+    <Text Include="tools\galaxy.txt" />
     <Text Include="to_do.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,14 +1,14 @@
 #include "../include/octree.h"
 
-Octree::Octree() : root(nullptr), eps(0) { }
-Octree::Octree(Body* body, Octant octant, double eps) : root(new Node(body, octant)), eps(eps) { }
+Octree::Octree() : root(nullptr), eps(0), theta(0.5) { }
+Octree::Octree(Body* body, Octant octant, double eps) : root(new Node(body, octant)), eps(eps), theta(0.5) { }
 Octree& Octree::operator=(Octree&& other) noexcept {
 	if (this != &other) {
 		this->delete_tree(root);
 		root = other.root;
 		eps = other.eps;
 		other.root = nullptr;
-		eps = 0;
+		other.eps = 0;
 	}
 	return *this;
 }
@@ -123,23 +123,13 @@ void Octree::update_acceleration(Node* node, Body* body) {
 		r = node->center_of_mass - body->position;
 		d = r.norm();
 		double s = node->octant.length;
-		if (s / d < 0.5) {
+		if (s / d < theta) {
 			sq = r.sq_norm();
 			body->acceleration += (G * node->total_mass / r.sq_norm()) * (r / d);
 			return;
 		}
 		for (int i = 0; i < 8; ++i) {
 			update_acceleration(node->children[i], body);
-		}
-	}
-}
-
-void Octree::display() {
-	auto it = create_iterator();
-	while (!it->is_end()) {
-		Node* node = it->next();
-		if (node != nullptr && node->body != nullptr) {
-			std::cout << node->body->position.x << "\n";
 		}
 	}
 }

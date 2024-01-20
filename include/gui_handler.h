@@ -18,6 +18,7 @@ public:
 	void pause();
 	void draw_octree();
 	void update_text();
+	void draw_orbits();
 
 public:
 	Reporter* reporter;
@@ -29,5 +30,6 @@ public:
 	sf::Font font;
 	bool is_text_visible;
 	bool is_octree_visible;
+	bool is_orbits_visible;
 };
 

@@ -29,6 +29,8 @@ public:
 	std::size_t body_count;
 	std::size_t dt; 
 	std::vector<Body> bodies; 
+	bool save_positions;
+	std::vector<std::vector<Vector>> body_positions;
 };
 
 

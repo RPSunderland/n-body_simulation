@@ -19,10 +19,10 @@ public:
 	void update_acceleration(Node* node, Body* body);
 	void delete_tree(Node* node);
 	std::shared_ptr<OctreeIterator> create_iterator();
-	void display();
 	
 public:
 	Node* root;
 	double eps;
+	double theta;
 };
 

@@ -1,5 +1,4 @@
 #pragma once
-//constexpr double G = 6.67384e-11;
-//constexpr double G = 1e-6;
 constexpr double G = 1.;
+constexpr double PI = 3.14159265358979323846;
 

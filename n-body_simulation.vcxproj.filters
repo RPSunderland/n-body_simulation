@@ -121,5 +121,8 @@
   <ItemGroup>
     <Text Include="data\sample.in" />
     <Text Include="to_do.txt" />
+    <Text Include="data\solar_system.txt" />
+    <Text Include="data\galaxy.txt" />
+    <Text Include="tools\galaxy.txt" />
   </ItemGroup>
 </Project>

@@ -1,14 +1,14 @@
 #include "../include/gui_handler.h"
 
-GUI_Handler::GUI_Handler() : reporter(nullptr), space(nullptr), window(), border(), view(), text(), font(), is_text_visible(true), is_octree_visible(false) { }
+GUI_Handler::GUI_Handler() : reporter(nullptr), space(nullptr), window(), border(), view(), text(), font(), is_text_visible(true), is_octree_visible(false), is_orbits_visible(false) { }
 void GUI_Handler::initialize() {
     window.create(sf::VideoMode(1000, 1000), "n-body_simulation");
     window.setFramerateLimit(60);
     
-    border.setScale(sf::Vector2f(10000, 10000));
+    border.setSize({ 10000.f, 10000.f });
     border.setFillColor(sf::Color::Transparent);
     border.setOutlineColor(sf::Color::Red);
-    border.setOutlineThickness(1);
+    border.setOutlineThickness(3);
     border.setOrigin(border.getSize() / 2.f);   
     border.setPosition(window.getSize().x / 2.f, window.getSize().y / 2.f);
     
@@ -20,7 +20,9 @@ void GUI_Handler::initialize() {
         return;
     }
     text.setFont(font);
-    text.setCharacterSize(10);
+    text.setCharacterSize(100);
+    float initialScale = 0.1f;
+    text.setScale(initialScale, initialScale);
     text.setStyle(sf::Text::Bold);
     text.setFillColor(sf::Color::White);
     text.setString(std::string{ });
@@ -43,16 +45,25 @@ void GUI_Handler::run() {
                 if (event.key.code == sf::Keyboard::Space) { pause(); }
                 else if (event.key.code == sf::Keyboard::O) { is_octree_visible = !is_octree_visible; pause(); }
                 else if (event.key.code == sf::Keyboard::T) { is_text_visible = !is_text_visible; }
+                else if (event.key.code == sf::Keyboard::C) { is_orbits_visible = !is_orbits_visible; }
             }
         }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) { view.move(0, -15); }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) { view.move(0, 15); }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) { view.move(-15, 0); }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) { view.move(15, 0); }
         
-
-
+        sf::Vector2f move_offset(0.f, 0.f);
+        float speed_factor = view.getSize().x / window.getSize().x;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) { move_offset.y = -25 * speed_factor; }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) { move_offset.y = 25 * speed_factor; }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) { move_offset.x = -25 * speed_factor; }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) { move_offset.x = 25 * speed_factor; }
+        sf::FloatRect borderBounds = border.getGlobalBounds();
+        sf::Vector2f new_position = view.getCenter() + move_offset;
+        if (new_position.x - view.getSize().x / 2.f >= borderBounds.left - 25 &&
+            new_position.x + view.getSize().x / 2.f <= borderBounds.left + borderBounds.width + 25 &&
+            new_position.y - view.getSize().y / 2.f >= borderBounds.top - 25 &&
+            new_position.y + view.getSize().y / 2.f <= borderBounds.top + borderBounds.height + 25) {
+            view.move(move_offset);
+        }
+        
         if (is_octree_visible) {
             reporter->is_running = false;
             draw_octree();
@@ -78,12 +89,17 @@ void GUI_Handler::run() {
             window.draw(body);
         }
 
+        if (!is_orbits_visible) {
+            space->save_positions = false;
+            space->body_positions.clear();
+        }
+        if (is_orbits_visible) {
+            space->save_positions = true;
+            draw_orbits();
+        }
+
         if (is_text_visible) {
             update_text();
-            sf::Vector2f viewCenter = view.getCenter();
-            sf::Vector2f viewSize = view.getSize();
-            float padding = 10.0f;
-            text.setPosition(viewCenter.x + viewSize.x / 2.f - text.getLocalBounds().width - padding, viewCenter.y + viewSize.y / 2.f - text.getLocalBounds().height - padding);
             window.draw(text);
         }
 
@@ -133,4 +149,19 @@ void GUI_Handler::update_text() {
     tmp_text += std::string("Current time: ") + std::to_string(space->current_time) + std::string("\n");
     tmp_text += std::string("Biggest radius: ") + std::to_string(space->bodies[space->largest_body_index()].radius) + std::string("\n");
     text.setString(tmp_text);
+    sf::Vector2f viewCenter = view.getCenter();
+    sf::Vector2f viewSize = view.getSize();
+    float padding = 10.0f; 
+    text.setPosition(viewCenter.x + viewSize.x / 2.f - text.getGlobalBounds().width - padding, viewCenter.y + viewSize.y / 2.f - text.getGlobalBounds().height - padding);
+}
+
+void GUI_Handler::draw_orbits() {
+    sf::VertexArray orbits(sf::Points);
+    for (auto& body_position : space->body_positions) {
+        for (auto& position : body_position) {
+            sf::Vector2f graphic_position = to_graphic_coords(position);
+            orbits.append(sf::Vertex(graphic_position, sf::Color::Blue));
+        }
+    }
+    window.draw(orbits);
 }
